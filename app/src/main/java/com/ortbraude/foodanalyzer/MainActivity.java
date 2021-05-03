@@ -1,9 +1,12 @@
 package com.ortbraude.foodanalyzer;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -56,8 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void logInClicked(View v){
 
         if(userNameText.getText().toString().isEmpty() || passwordText.getText().toString().isEmpty()){
-            Toast.makeText(this, "A UserName and a Password are required.", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(this, "A Username and a Password are required.", Toast.LENGTH_SHORT).show();
         }else{
             ParseUser.logInInBackground(userNameText.getText().toString(),passwordText.getText().toString(),new LogInCallback() {
                 public void done(ParseUser user, ParseException e) {
@@ -75,13 +77,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void logIn(){
-
+        Intent intent = new Intent(getApplicationContext(), MainWindowActivity.class);
+        startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("Log In");
 
         userNameText = findViewById(R.id.userNameText);
         passwordText = findViewById(R.id.passwordText);
@@ -104,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         passwordText.setOnKeyListener(this);
 
         if (ParseUser.getCurrentUser() != null){
+            System.out.println(ParseUser.getCurrentUser().getUsername());
             logIn();
         }
 
