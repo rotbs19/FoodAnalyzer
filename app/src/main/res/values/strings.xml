@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">FoodAnalyzer</string>
+    <string name="login">LogIn</string>
+    <string name="food_analyzer">FOOD ANALYZER</string>
+    <string name="welcome_to_the_food_analyzer_app">Welcome to the Food Analyzer app!</string>
+    <string name="signup">SignUp</string>
+    <string name="todo">TODO</string>
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">Tu7xOIw4gFaQDpECl5GQn2TSf8IPMtbTRyw20lMY</string>
+    <string name="back4app_client_key">VklufhOPEs3UA623DeEGUohLgegmLCbFaUC3L8N6</string>
+    <string name="or_sign_up">or, Sign Up</string>
+    <string name="password">Password</string>
+    <string name="username">UserName</string>
+    <string name="usernameSignUp">Username</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Confirm password</string>
+</resources>
