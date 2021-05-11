@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -32,7 +33,9 @@ public class MainWindowActivity extends AppCompatActivity {
     }
 
     public void addMealClicked(View v){
+        Log.i("Add meal","Tacking a meal picture");
         Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+        intent.putExtra("mode", "Analyze");
         startActivity(intent);
     }
 

@@ -1,6 +1,8 @@
 package com.ortbraude.foodanalyzer;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -36,6 +38,10 @@ public class CalibrationActivity extends AppCompatActivity {
     }
 
     public void calibrateClicked(View view) {
+        Log.i("Calibration","Tacking calibration picture");
+        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
+        intent.putExtra("mode", "calibration");
+        startActivity(intent);
     }
 
         @Override

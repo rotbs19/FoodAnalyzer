@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -26,7 +27,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 import android.util.Size;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
@@ -47,8 +47,8 @@ import java.util.List;
 
 public class CameraActivity extends AppCompatActivity {
 
-    ImageButton imageButton;
     TextureView textureView;
+    private String mode;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     static {
@@ -73,13 +73,11 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        Intent intent = getIntent();
+        mode = intent.getStringExtra("mode");
+
         textureView = findViewById(R.id.cameraTextureView);
-        imageButton = findViewById(R.id.captureBtn);
-
-
         textureView.setSurfaceTextureListener(textureListener);
-
-        imageButton.setOnClickListener(v -> takePicture());
     }
 
     @Override
@@ -87,7 +85,6 @@ public class CameraActivity extends AppCompatActivity {
         if(requestCode == 101){
             if(grantResults[0] == PackageManager.PERMISSION_DENIED){
                 Toast.makeText(getApplicationContext(),"Sorry, camera permission is necessary",Toast.LENGTH_LONG).show();
-
             }
         }
     }
@@ -198,7 +195,7 @@ public class CameraActivity extends AppCompatActivity {
 
     }
 
-    protected void takePicture() {
+    public void takePictureClicked(View v) {
         if (null == cameraDevice) {
             return;
         }
@@ -259,12 +256,14 @@ public class CameraActivity extends AppCompatActivity {
                     }
                 }
             };
+
             reader.setOnImageAvailableListener(readerListener, mBackgroundHandler);
             final CameraCaptureSession.CaptureCallback captureListener = new CameraCaptureSession.CaptureCallback() {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Toast.makeText(CameraActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
+                    Log.i("Camera", "picture was taken");
+                    //Toast.makeText(CameraActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
                     try {
                         createCameraPreview();
                     } catch (CameraAccessException e) {
