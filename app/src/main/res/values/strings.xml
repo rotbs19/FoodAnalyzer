@@ -16,4 +16,6 @@
     <string name="last_name">Last name</string>
     <string name="email">Email</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="next">NEXT</string>
+    <string name="previus">PREVIUS</string>
 </resources>
