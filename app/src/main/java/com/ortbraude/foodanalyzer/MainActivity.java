@@ -76,16 +76,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void logIn(ParseUser user){
-        if (!user.getBoolean("Calibrated")){
+    /*    if (!user.getBoolean("Calibrated")){
             showAlert();
         }
-        else{
+        else{*/
             Log.i("LogIn","Successful");
             Intent intent = new Intent(getApplicationContext(), MainWindowActivity.class);
             startActivity(intent);
-        }
+      //  }
     }
-
+/*
     private void showAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Calibration needed")
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
         AlertDialog doCalibration = builder.create();
         doCalibration.show();
-    }
+    }*/
 
 
     @Override
