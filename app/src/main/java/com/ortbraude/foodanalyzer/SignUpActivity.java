@@ -88,8 +88,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 .setPositiveButton("OK", (dialog, which) -> {
                     dialog.cancel();
                     if (!error) {
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+                        finish();
                     }
                 });
         AlertDialog ok = builder.create();
