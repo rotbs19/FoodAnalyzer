@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView headlineTextView;
     TextView welcomeTextView;
 
+    private String TAG = "MainActivity";
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_ENTER &&  event.getAction() == KeyEvent.ACTION_DOWN){
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
     }
 
-    private void logInClicked(View v){
+    public void logInClicked(View v){
         if(userNameText.getText().toString().isEmpty() || passwordText.getText().toString().isEmpty()){
             Toast.makeText(this, "A Username and a Password are required.", Toast.LENGTH_SHORT).show();
         }else{
@@ -76,35 +77,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void logIn(ParseUser user){
-    /*    if (!user.getBoolean("Calibrated")){
-            showAlert();
-        }
-        else{*/
-            Log.i("LogIn","Successful");
-            Intent intent = new Intent(getApplicationContext(), MainWindowActivity.class);
-            startActivity(intent);
-      //  }
+        Log.i(TAG,"Login - Successful");
+        Intent intent = new Intent(getApplicationContext(), MainWindowActivity.class);
+        startActivity(intent);
     }
-/*
-    private void showAlert() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Calibration needed")
-                .setMessage("Hi in order to accurately evaluate your meals we need to calibrate your camera, do you wish to do this now ? ")
-                .setPositiveButton("YES", (dialog, which) -> {
-                    dialog.cancel();
-                    Log.i("LogIn","Calibration mode");
-                    Intent intent = new Intent(getApplicationContext(), CalibrationActivity.class);
-                    startActivity(intent);
-
-                }).setNegativeButton("NO", (dialog, which) -> {
-                    dialog.cancel();
-                    Intent intent = new Intent(getApplicationContext(), MainWindowActivity.class);
-                    startActivity(intent);
-                });
-        AlertDialog doCalibration = builder.create();
-        doCalibration.show();
-    }*/
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

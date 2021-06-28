@@ -3,14 +3,13 @@ package com.ortbraude.foodanalyzer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -24,7 +23,6 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
@@ -36,11 +34,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,10 +41,11 @@ import java.util.List;
 
 
 public class CameraActivity extends AppCompatActivity {
-
-    TextureView textureView;
-    private String mode;
+    private static final String TAG = "Camera";
+    private TextureView textureView;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    private ImageHandlerSingleton singleton;
+    private ImageButton galleryBtn;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0,90);
@@ -65,19 +59,23 @@ public class CameraActivity extends AppCompatActivity {
     private CameraCaptureSession cameraCaptureSessions;
     private CaptureRequest.Builder captureRequestBuilder;
     private Size imageDimension;
-
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+
+    public void galleryClicked(View v){finish();}
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
-
-        Intent intent = getIntent();
-        mode = intent.getStringExtra("mode");
-
+        setTitle("Camera");
+        galleryBtn = findViewById(R.id.galleryBtnCamera);
+        singleton = ImageHandlerSingleton.getInstance();
+        if(!singleton.newAlbum.isEmpty()){
+            Bitmap bitmap = singleton.newAlbum.get(singleton.newAlbum.size()-1);
+            galleryBtn.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 200, 200, false));
+        }else{galleryBtn.setImageResource(R.drawable.gallery);}
         textureView = findViewById(R.id.cameraTextureView);
         textureView.setSurfaceTextureListener(textureListener);
     }
@@ -103,9 +101,7 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
-        }
+        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) { }
 
         @Override
         public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
@@ -113,15 +109,15 @@ public class CameraActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-
-        }
+        public void onSurfaceTextureUpdated(SurfaceTexture surface) { }
     };
 
     private final CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
 
         @Override
         public void onOpened(@NonNull CameraDevice camera) {
+            //This is called when the camera is open
+            Log.e(TAG, "onOpened");
             cameraDevice = camera;
             try {
                 createCameraPreview();
@@ -173,14 +169,15 @@ public class CameraActivity extends AppCompatActivity {
 
     private void updatePreview() throws CameraAccessException {
         if(cameraDevice == null){
+            Log.e(TAG, "updatePreview error, return");
             return;
         }
         captureRequestBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
         cameraCaptureSessions.setRepeatingRequest(captureRequestBuilder.build(), null, mBackgroundHandler);
-
     }
 
     private void openCamera() throws CameraAccessException {
+        Log.e(TAG, "is camera open");
         CameraManager manager = (CameraManager)getSystemService(Context.CAMERA_SERVICE);
         cameraId = manager.getCameraIdList()[0];
         CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
@@ -199,6 +196,7 @@ public class CameraActivity extends AppCompatActivity {
 
     public void takePictureClicked(View v) {
         if (null == cameraDevice) {
+            Log.e(TAG, "cameraDevice is null");
             return;
         }
         CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
@@ -227,40 +225,35 @@ public class CameraActivity extends AppCompatActivity {
             // Orientation
             int rotation = getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-            //final File file = new File(Environment.getExternalStorageDirectory() + "/pic.jpg");
 
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
                     Image image = null;
-                    try {
-                        image = reader.acquireLatestImage();
-                        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
-                        byte[] bytes = new byte[buffer.capacity()];
-                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes , 0, bytes .length);
-                        buffer.get(bytes);
-                        save(bytes);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (image != null) {
-                            image.close();
-                        }
-                    }
-                }
+                    image = reader.acquireLatestImage();
+                    ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+                    byte[] bytes = new byte[buffer.capacity()];
+                    buffer.get(bytes);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
-                private void save(byte[] bytes) throws IOException {
-                    OutputStream output = null;
-                    try {
-//                        output = new FileOutputStream(file);
-                        output.write(bytes);
-                    } finally {
-                        if (null != output) {
-                            output.close();
+                    // rotate image 90 degrees
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 640, 480, true);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+
+                    //saves image to singleton
+                    singleton.newAlbum.add(rotatedBitmap);
+                    Log.i(TAG,"image saved");
+
+                    //update mini gallery image
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            galleryBtn.setImageBitmap(Bitmap.createScaledBitmap(rotatedBitmap, 200, 200, false));
+                            Log.i(TAG,"gallery image updated");
                         }
-                    }
+                    });
                 }
             };
 
@@ -269,8 +262,7 @@ public class CameraActivity extends AppCompatActivity {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    Log.i("Camera", "picture was taken");
-                    //Toast.makeText(CameraActivity.this, "Saved:" + file, Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "picture was taken");
                     try {
                         createCameraPreview();
                     } catch (CameraAccessException e) {
@@ -289,8 +281,7 @@ public class CameraActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onConfigureFailed(CameraCaptureSession session) {
-                }
+                public void onConfigureFailed(CameraCaptureSession session) {}
             }, mBackgroundHandler);
         } catch (CameraAccessException e) {
             e.printStackTrace();
@@ -300,6 +291,7 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e(TAG, "onResume");
 
         startBackgroundThred();
         if(textureView.isAvailable()){
@@ -317,11 +309,12 @@ public class CameraActivity extends AppCompatActivity {
         mBackgroundThread = new HandlerThread("Camera Background");
         mBackgroundThread.start();
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
-
     }
 
     @Override
     protected void onPause() {
+        Log.e(TAG, "onPause");
+        //close camera
         try {
             stopBackgroundThread();
         } catch (InterruptedException e) {

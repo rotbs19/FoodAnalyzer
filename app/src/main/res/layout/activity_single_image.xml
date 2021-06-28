@@ -8,37 +8,38 @@
     tools:context=".SingleImageActivity">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="409dp"
-        android:layout_height="662dp"
+        android:id="@+id/singleImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/deletBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/checkBtn"
-        android:layout_width="100dp"
+        android:id="@+id/deletBtn"
+        android:layout_width="70dp"
         android:layout_height="70dp"
-        android:backgroundTint="#00FFFFFF"
-        android:onClick="checkClicked"
+        android:backgroundTint="#000000"
+        android:onClick="deleteClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/closeBtn"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/check" />
+        app:layout_constraintStart_toEndOf="@+id/revertBtn"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
 
     <ImageButton
-        android:id="@+id/closeBtn"
-        android:layout_width="100dp"
+        android:id="@+id/revertBtn"
+        android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginTop="3dp"
-        android:backgroundTint="#00FFFFFF"
-        android:onClick="closeClicked"
-        app:layout_constraintEnd_toStartOf="@+id/checkBtn"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="#000000"
+        android:onClick="revertClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deletBtn"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/close" />
+        app:srcCompat="@android:drawable/ic_menu_revert" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

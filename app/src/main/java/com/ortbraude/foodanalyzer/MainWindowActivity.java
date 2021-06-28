@@ -15,16 +15,21 @@ import android.view.View;
 import com.parse.ParseUser;
 
 public class MainWindowActivity extends AppCompatActivity {
+    private String TAG = "MainWindowActivity";
+    private ImageHandlerSingleton singleton;
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu){
+        //creates an option menu
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.app_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //handles the option menu
         if(item.getItemId() == R.id.logout){
+            Log.i(TAG,"LogOut pressed - logging out from the user");
             ParseUser.logOut();
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
@@ -33,9 +38,9 @@ public class MainWindowActivity extends AppCompatActivity {
     }
 
     public void addMealClicked(View v){
-        Log.i("Add meal","Tacking a meal picture");
-        Intent intent = new Intent(getApplicationContext(), CameraActivity.class);
-        intent.putExtra("mode", "Analyze");
+        Log.i(TAG,"Add meal pressed - starting a new meal gallery");
+        Intent intent = new Intent(getApplicationContext(), GalleryActivity.class);
+        intent.putExtra("Gallery mode", "new meal");
         startActivity(intent);
     }
 
@@ -48,7 +53,10 @@ public class MainWindowActivity extends AppCompatActivity {
     }
 
     public void galleryClicked(View v){
-
+        Log.i(TAG,"Gallery pressed - opening gallery");
+        Intent intent = new Intent(getApplicationContext(), GalleryActivity.class);
+        intent.putExtra("Gallery mode", "gallery");
+        startActivity(intent);
     }
 
     @Override
@@ -56,6 +64,6 @@ public class MainWindowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_window);
         setTitle("Food Analyzer");
-
+        singleton = ImageHandlerSingleton.getInstance();
     }
 }

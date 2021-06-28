@@ -23,10 +23,20 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/round_button"
         android:onClick="takePictureClicked"
-        android:src="@drawable/camera2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"></ImageButton>
+
+    <ImageButton
+        android:id="@+id/galleryBtnCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/round_gallery_preview"
+        android:onClick="galleryClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/takePictureBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
