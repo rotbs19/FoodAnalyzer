@@ -1,10 +1,6 @@
 package com.ortbraude.foodanalyzer;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,7 +8,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.parse.ParseUser;
+
+import java.io.IOException;
 
 public class MainWindowActivity extends AppCompatActivity {
     private String TAG = "MainWindowActivity";
@@ -44,7 +45,16 @@ public class MainWindowActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void feedClicked(View v){
+    public void feedClicked(View v) throws IOException {
+
+        /*
+        GetFeatures glcmfe = new GetFeatures((BitmapFactory.decodeResource(getResources(), R.drawable.sample)), 15);
+        glcmfe.extract();
+        System.out.println("Contrast: "+glcmfe.getContrast());
+        System.out.println("Homogenity: "+glcmfe.getHomogenity());
+        System.out.println("Entropy: "+glcmfe.getEntropy());
+        System.out.println("Energy: "+glcmfe.getEnergy());
+        System.out.println("Dissimilarity: "+glcmfe.getDissimilarity());*/
 
     }
 
