@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodAnalyzer">
-        <activity android:name=".AddFoodToDBActivity"></activity>
+<!--        <activity android:name=".AddFoodToDBActivity"></activity>-->
         <activity android:name=".GalleryActivity" />
         <activity android:name=".SingleImageActivity" />
         <activity android:name=".CameraActivity" />

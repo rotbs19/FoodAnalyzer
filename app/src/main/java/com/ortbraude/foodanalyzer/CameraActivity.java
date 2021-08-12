@@ -241,7 +241,13 @@ public class CameraActivity extends AppCompatActivity {
                     matrix.postRotate(90);
                     Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, 640, 480, true);
                     Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+                    //////////
 
+                    int image_width = rotatedBitmap.getWidth();
+                    int image_Height = rotatedBitmap.getHeight();
+                    Log.d("ADebugTag", "image_width: " + Integer.toString(image_width) + "image_Height:" + Integer.toString(image_Height));
+
+                    //////////
                     //saves image to singleton
                     singleton.newAlbum.add(rotatedBitmap);
                     Log.i(TAG,"image saved");

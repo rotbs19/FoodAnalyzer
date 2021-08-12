@@ -22,6 +22,7 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
     private ImageHandlerSingleton singleton;
     private GalleryMode mode;
 
+
     public void doneClicked(View v){
         Log.i(TAG,"done pressed - saves new meal album");
         singleton.uploadAlbum();
