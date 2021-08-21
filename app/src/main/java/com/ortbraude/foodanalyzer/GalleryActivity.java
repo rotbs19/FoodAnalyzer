@@ -26,12 +26,15 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
     public void doneClicked(View v){
         Log.i(TAG,"done pressed - saves new meal album");
         singleton.uploadAlbum();
-        singleton.resetSingleton();
+        Intent intent = new Intent(getApplicationContext(), ClassifyActivity2.class);
+        startActivity(intent);
+        //singleton.resetSingleton();
         finish();
     }
 
     public void cancelClicked(View v){
         Log.i(TAG,"cancel pressed - cancels new meal album");
+        singleton.resetSingleton();
         finish();
     }
 
