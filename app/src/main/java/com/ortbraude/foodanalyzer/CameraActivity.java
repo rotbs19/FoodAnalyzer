@@ -1,9 +1,7 @@
 package com.ortbraude.foodanalyzer;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -28,11 +26,20 @@ import android.os.HandlerThread;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -46,6 +53,12 @@ public class CameraActivity extends AppCompatActivity {
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private ImageHandlerSingleton singleton;
     private ImageButton galleryBtn;
+    private ViewGroup mainLayout;
+    private ImageView image;
+    private int xDelta;
+    private int yDelta;
+
+
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0,90);
@@ -78,7 +91,55 @@ public class CameraActivity extends AppCompatActivity {
         }else{galleryBtn.setImageResource(R.drawable.gallery);}
         textureView = findViewById(R.id.cameraTextureView);
         textureView.setSurfaceTextureListener(textureListener);
+        Toast tost = Toast.makeText(this, "The first picture must be taken in parallel to the dish (directly from above) ",Toast.LENGTH_LONG);
+        tost.setGravity(Gravity.CENTER_VERTICAL,0,0);
+        tost.show();
+
+        mainLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
+        image = (ImageView) findViewById(R.id.cardBorder);
+
+        image.setOnTouchListener(onTouchListener());
     }
+
+    private View.OnTouchListener onTouchListener() {
+        return new View.OnTouchListener() {
+
+            @SuppressLint("ClickableViewAccessibility")
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+
+                final int x = (int) event.getRawX();
+                final int y = (int) event.getRawY();
+
+                switch (event.getAction() & MotionEvent.ACTION_MASK) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams)
+                                view.getLayoutParams();
+
+                        xDelta = x - lParams.leftMargin;
+                        yDelta = y - lParams.topMargin;
+                        break;
+
+
+
+                    case MotionEvent.ACTION_MOVE:
+                        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view
+                                .getLayoutParams();
+                        layoutParams.leftMargin = x - xDelta;
+                        layoutParams.topMargin = y - yDelta;
+                        layoutParams.rightMargin = 0;
+                        layoutParams.bottomMargin = 0;
+                        view.setLayoutParams(layoutParams);
+                        break;
+                }
+
+                mainLayout.invalidate();
+                return true;
+            }
+        };
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,@NonNull String[] permissions, @NonNull int[] grantResults){
@@ -124,6 +185,7 @@ public class CameraActivity extends AppCompatActivity {
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
+
         }
 
         @Override

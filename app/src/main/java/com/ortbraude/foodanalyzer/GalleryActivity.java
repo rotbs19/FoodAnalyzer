@@ -1,9 +1,5 @@
 package com.ortbraude.foodanalyzer;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 //this class will handle every type of gallery (all albums, single album, new album)
 public class GalleryActivity extends AppCompatActivity implements View.OnClickListener{
@@ -25,13 +26,16 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
 
     public void doneClicked(View v){
         Log.i(TAG,"done pressed - saves new meal album");
-        singleton.uploadAlbum();
-        singleton.resetSingleton();
+        if(singleton.newAlbum.size()>0) {
+            singleton.uploadAlbum();
+            singleton.resetSingleton();
+        }
         finish();
     }
 
     public void cancelClicked(View v){
         Log.i(TAG,"cancel pressed - cancels new meal album");
+        singleton.resetSingleton();
         finish();
     }
 
