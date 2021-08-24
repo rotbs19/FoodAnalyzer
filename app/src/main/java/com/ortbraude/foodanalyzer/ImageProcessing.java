@@ -94,7 +94,7 @@ public class ImageProcessing {
         return distance;
     }
 
-    public void compareNew(Bitmap image) throws IOException {
+    public double compareNew(Bitmap image , String food_name) throws IOException {
         //will compare an image to database in order to get a percent value of every food in the image
         ArrayList<ArrayList<Double>> foodVectors = null;
         ArrayList<ArrayList<Double>> imageVectors;
@@ -123,9 +123,7 @@ public class ImageProcessing {
             }
         }
 
-        System.out.println("percent = "+percent);
+        return percent;
     }
 }
-
-
 

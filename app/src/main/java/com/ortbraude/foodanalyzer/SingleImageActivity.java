@@ -45,12 +45,5 @@ public class SingleImageActivity extends AppCompatActivity {
                 imageView.setImageBitmap(singleton.meals.get(index));
         }
 
-
-
-
-
-
-
-
     }
 }

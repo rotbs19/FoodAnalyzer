@@ -60,8 +60,8 @@ public class MainWindowActivity extends AppCompatActivity {
         images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak9));
         images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak10));
         imageProcessing.addFoodToDB("Steak", images);*/
-        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test1));
-        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test2));
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test1));
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test2));
 
     }
 
