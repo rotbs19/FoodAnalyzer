@@ -1,13 +1,6 @@
 package com.ortbraude.foodanalyzer;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,12 +11,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnKeyListener {
+public class LogInActivity extends AppCompatActivity implements View.OnClickListener, View.OnKeyListener {
     EditText userNameText;
     EditText passwordText;
     TextView signUpTextView;
@@ -32,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView headlineTextView;
     TextView welcomeTextView;
 
-    private String TAG = "MainActivity";
+    private String TAG = "LogInActivity";
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_ENTER &&  event.getAction() == KeyEvent.ACTION_DOWN){
@@ -68,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if (user != null) {
                         logIn(user);
                     }else {
-                        Toast.makeText(MainActivity.this, "Something went wrong, try again later" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LogInActivity.this, "Something went wrong, try again later" , Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -78,14 +74,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void logIn(ParseUser user){
         Log.i(TAG,"Login - Successful");
-        Intent intent = new Intent(getApplicationContext(), MainWindowActivity.class);
+        Intent intent = new Intent(getApplicationContext(), HomeWindowActivity.class);
         startActivity(intent);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_log_in);
         setTitle("Log In");
 
         userNameText = findViewById(R.id.userNameText);

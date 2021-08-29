@@ -1,13 +1,10 @@
 package com.ortbraude.foodanalyzer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AppCompatActivity;
 import java.io.IOException;
-
 public class AnalyzeActivity extends AppCompatActivity {
 
     private TextView main_label;
@@ -15,9 +12,6 @@ public class AnalyzeActivity extends AppCompatActivity {
     private ImageHandlerSingleton singleton;
     private String TAG = "AnalyzeActivity";
     private String dishName;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +25,12 @@ public class AnalyzeActivity extends AppCompatActivity {
     }
 
     public void analyzeDish() {
-
-
-
-
-
-
-
         try {
             imageProcessing.compareNew(singleton.newAlbum.get(0),this.dishName);
         } catch (IOException e) {
             Log.e(TAG,e.getMessage());
         }
     }
-
-
-
 
 
 }

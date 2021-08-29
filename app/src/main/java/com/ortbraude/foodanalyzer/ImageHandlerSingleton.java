@@ -56,7 +56,7 @@ public class ImageHandlerSingleton {
             ParseObject newPic = new ParseObject("Images");
             if(newAlbum.indexOf(image)==0){
                 thumbnail = newPic;
-                //If the thumbnail will save the user
+                //If it is the thumbnail the user will also be saved
                 newPic.put("user",ParseUser.getCurrentUser());
             }else newPic.put("gallery", thumbnail);
 

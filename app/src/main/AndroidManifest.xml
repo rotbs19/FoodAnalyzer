@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-feature android:name="android.hardware.camera2.full" />
 
     <application
@@ -17,14 +18,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodAnalyzer">
-        <activity android:name=".AnalyzeActivity"></activity>
-        <activity android:name=".ClassifyActivity2" />
+        <activity android:name=".Camerax"></activity>
+        <activity android:name=".AnalyzeActivity" />
+        <activity android:name=".ClassifyActivity" />
         <activity android:name=".GalleryActivity" />
         <activity android:name=".SingleImageActivity" />
-        <activity android:name=".CameraActivity" />
-        <activity android:name=".MainWindowActivity" />
+        <activity android:name=".HomeWindowActivity" />
         <activity android:name=".SignUpActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LogInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -2,18 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/back"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/appbackround"
-    tools:context=".MainWindowActivity">
+    android:background="#000000"
+    tools:context=".HomeWindowActivity">
 
     <ImageView
         android:id="@+id/logoImageView2"
         android:layout_width="110dp"
         android:layout_height="106dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/ic_launcher_foreground"
+        android:background="@drawable/round_logo"
         android:contentDescription="@string/todo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -34,60 +33,32 @@
             android:id="@+id/tackPictureBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#63EEFF41"
+            android:background="#00FFFFFF"
             android:drawableBottom="@drawable/camera"
             android:onClick="addMealClicked"
             android:text="Add meal"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_column="0"
             app:layout_columnWeight="1"
             app:layout_gravity="fill"
             app:layout_row="0"
-            app:layout_rowWeight="1" />
-
-        <Button
-            android:id="@+id/feedBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#63EEFF41"
-            android:drawableBottom="@drawable/feed"
-            android:onClick="feedClicked"
-            android:text="Feed"
-            android:textSize="20sp"
-            app:layout_column="1"
-            app:layout_columnWeight="1"
-            app:layout_gravity="fill"
-            app:layout_row="0"
-            app:layout_rowWeight="1" />
-
-        <Button
-            android:id="@+id/personalInfoBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#63EEFF41"
-            android:drawableBottom="@drawable/personal"
-            android:onClick="personalInfoClixked"
-            android:text="Personal"
-            android:textSize="20sp"
-            app:layout_column="0"
-            app:layout_columnWeight="1"
-            app:layout_gravity="fill"
-            app:layout_row="1"
             app:layout_rowWeight="1" />
 
         <Button
             android:id="@+id/galleryBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#63EEFF41"
+            android:background="#00FFFFFF"
             android:drawableBottom="@drawable/gallery"
             android:onClick="galleryClicked"
             android:text="gallery"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_column="1"
             app:layout_columnWeight="1"
             app:layout_gravity="fill"
-            app:layout_row="1"
+            app:layout_row="0"
             app:layout_rowWeight="1" />
 
 

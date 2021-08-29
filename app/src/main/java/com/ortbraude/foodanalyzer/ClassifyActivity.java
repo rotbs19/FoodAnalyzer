@@ -1,7 +1,5 @@
 package com.ortbraude.foodanalyzer;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
@@ -11,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.tensorflow.lite.Interpreter;
 
@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class ClassifyActivity2 extends AppCompatActivity {
+public class ClassifyActivity extends AppCompatActivity {
 
 
     private  ImageHandlerSingleton singleton;
@@ -102,7 +102,7 @@ public class ClassifyActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_classify2);
+        setContentView(R.layout.activity_classify);
         setTitle("What is your food?");
         singleton = ImageHandlerSingleton.getInstance();
         image = singleton.newAlbum.get(0);
@@ -214,7 +214,7 @@ public class ClassifyActivity2 extends AppCompatActivity {
 //        About.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                Log.d("MainActivity", "onOptionsItemSelected_menu_about");
+//                Log.d("LogInActivity", "onOptionsItemSelected_menu_about");
 //                AlertDialog alertDialog = new AlertDialog.Builder(Classify.this).create();
 //                alertDialog.setTitle("About");
 //                alertDialog.setMessage("Food Analyzer\n\nWas created by:\nBar Plaisant\nShani Harris\n\nSupervisor:\n Prof. Zeev Volkovich\n\n©2020 All Rights Reserved");
