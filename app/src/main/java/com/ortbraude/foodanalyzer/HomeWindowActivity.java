@@ -1,6 +1,7 @@
 package com.ortbraude.foodanalyzer;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.parse.ParseUser;
+
+import java.io.IOException;
 
 public class HomeWindowActivity extends AppCompatActivity {
     private String TAG = "HomeWindowActivity";
@@ -56,5 +59,40 @@ public class HomeWindowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_window);
         setTitle("Food Analyzer");
         singleton = ImageHandlerSingleton.getInstance();
+        try {
+            uploadNewFood();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        ImageProcessing  imageProcessing = new ImageProcessing(80,32);
+//        try {
+//            imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3),"Steak");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
+
+    private void uploadNewFood() throws IOException {
+        ImageProcessing imageProcessing = new ImageProcessing(80,32);
+//        ArrayList<Bitmap> images = new ArrayList<>();
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steaktop1));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steaktop2));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steaktop3));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak1));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak2));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak3));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak4));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak5));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak6));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak7));
+
+//        try {
+//            imageProcessing.addFoodToDB("Steak", images);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        System.out.println("");
+        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3),"Steak");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getReso
     }
 }

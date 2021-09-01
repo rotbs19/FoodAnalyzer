@@ -52,7 +52,9 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
     private void closeKeyboard(){
         InputMethodManager inputMethodManager = ( InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        if(inputMethodManager.isAcceptingText()){
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     public void logInClicked(View v){

@@ -106,6 +106,7 @@ public class ClassifyActivity extends AppCompatActivity {
         setTitle("What is your food?");
         singleton = ImageHandlerSingleton.getInstance();
         image = singleton.newAlbum.get(0);
+//        image = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test);
         // get all selected classifier data from classifiers
         //chosen = (String) getIntent().getStringExtra("chosen");
         quant = (boolean) getIntent().getBooleanExtra("quant", false);
@@ -140,7 +141,6 @@ public class ClassifyActivity extends AppCompatActivity {
                 labelProbArray = new float[1][labelList.size()];
             }
         }
-        //setContentView(R.layout.activity_classify);
 
 
         // labels that hold top three results of CNN
@@ -155,22 +155,12 @@ public class ClassifyActivity extends AppCompatActivity {
         selected_image = (ImageView) findViewById(R.id.selected_image);
         selected_image.setImageBitmap(image);
 
-//        labelMessage = (TextView) findViewById(R.id.labelMessage);
-
 
         // initialize array to hold top labels
         topLables = new String[RESULTS_TO_SHOW];
         // initialize array to hold top probabilities
         topConfidence = new String[RESULTS_TO_SHOW];
 
-        // allows user to go back to activity to select a different image
-//        save_button = (Button) findViewById(R.id.save_button);
-//        save_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                saveImageToFirebase();
-//            }
-//        });
 
 
 
@@ -188,108 +178,7 @@ public class ClassifyActivity extends AppCompatActivity {
         // display the results
         printTopKLabels();
 
-
-//        try {
-//            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathImage);
-//            selected_image.setImageBitmap(bitmap);
-//            // not sure why this happens, but without this the image appears on its side
-//            selected_image.setRotation(selected_image.getRotation() + Integer.parseInt(getIntent().getStringExtra("angle")));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (OutOfMemoryError error) {
-//            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-//            alertDialog.setTitle("OutOfMemoryError ");
-//            alertDialog.setMessage("This photo can't be uploaded\nNot enough memory");
-//            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//            alertDialog.show();
-//        }
-
-
-//        About = (Button) findViewById(R.id.btnAbout);
-//        About.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d("LogInActivity", "onOptionsItemSelected_menu_about");
-//                AlertDialog alertDialog = new AlertDialog.Builder(Classify.this).create();
-//                alertDialog.setTitle("About");
-//                alertDialog.setMessage("Food Analyzer\n\nWas created by:\nBar Plaisant\nShani Harris\n\nSupervisor:\n Prof. Zeev Volkovich\n\n©2020 All Rights Reserved");
-//                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                alertDialog.show();
-//
-//            }
-//        });
-//
-//        Menu = (Button) findViewById(R.id.btnMenu1);
-//        Menu.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(Classify.this, "menu prasses", Toast.LENGTH_LONG).show();
-//
-//                PopupMenu pm = new PopupMenu(Classify.this, Menu);
-//                pm.getMenuInflater().inflate(R.menu.menu_layout, pm.getMenu());
-//                pm.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                    @Override
-//                    public boolean onMenuItemClick(MenuItem item) {
-//                        switch (item.getItemId()) {
-//                            case R.id.home_page_item:
-//                                Intent intentRegisterHomePage = new Intent(Classify.this, HomePage.class);
-//                                startActivity(intentRegisterHomePage);
-//                                return true;
-//
-//                            case R.id.upload_item:
-//                                Intent intentRegisterUpload = new Intent(Classify.this, ChooseModel.class);
-//                                startActivity(intentRegisterUpload);
-//
-//                                return true;
-//
-//                            case R.id.history_item:
-//                                Intent intentRegisterHistory = new Intent(Classify.this, History.class);
-//                                startActivity(intentRegisterHistory);
-//                                return true;
-//
-//                            case R.id.program_diet_item:
-//
-//                                Toast.makeText(Classify.this, "program diet", Toast.LENGTH_LONG).show();
-//                                dietProgram();
-//
-//                                return true;
-//
-//                            case R.id.settings_item:
-//                                // need to do
-//                                Toast.makeText(Classify.this, "Need to do", Toast.LENGTH_LONG).show();
-//                                return true;
-//
-//                            case R.id.logout_item:
-//                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-//                                startActivity(intent);
-//                                return true;
-//
-//
-//                        }
-//
-//                        return true;
-//                    }
-//                });
-
-//                pm.show();
-//
-//            }
-//        });
     }
-
-
-
-
 
     // converts bitmap to byte array which is passed in the tflite graph
     private void convertBitmapToByteBuffer(Bitmap bitmap) {

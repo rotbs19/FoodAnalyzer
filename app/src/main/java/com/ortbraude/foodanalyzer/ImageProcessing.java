@@ -1,6 +1,7 @@
 package com.ortbraude.foodanalyzer;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 
 import com.parse.ParseException;
@@ -27,13 +28,28 @@ public class ImageProcessing {
     public void addFoodToDB(String name, ArrayList<Bitmap> images) throws IOException {
         ArrayList<ArrayList<Double>> allVectors = new ArrayList<>();
         ArrayList<ArrayList<Double>> imageVectors;
-
+        ArrayList<Double> avgVector = new ArrayList<>();
         for (int pic = 0; pic < images.size(); pic++) {
-            imageVectors = getImageVectors(images.get(pic));
-            //removes overlapping vectors to optimize the dataset
-            for(ArrayList<Double> newVector : imageVectors){
-                if(!optimizeVectors(allVectors,newVector))
+            imageVectors = (ArrayList<ArrayList<Double>>) getImageVectors(images.get(pic)).get(0);
+            if(avgVector.size()==0){
+                avgVector = imageVectors.get(0);
+            }
+            if(pic<3) {
+                for (ArrayList<Double> newVector : imageVectors) {
                     allVectors.add(newVector);
+                    avgVector = avgVectors(avgVector,newVector);
+                }
+            }
+             else {
+                //removes overlapping vectors to optimize the dataset
+                for(ArrayList<Double> newVector : imageVectors){
+                    if(!optimizeVectors(allVectors,newVector)){
+                        if(getVectorDistance(newVector,avgVector)>0.07){
+                            allVectors.add(newVector);
+                            avgVector = avgVectors(avgVector,newVector);
+                        }
+                    }
+                }
             }
         }
 
@@ -56,8 +72,9 @@ public class ImageProcessing {
         });
     }
     // retrieves all the vectors of an image
-    public ArrayList<ArrayList<Double>> getImageVectors(Bitmap image) throws IOException {
+    public ArrayList<Object> getImageVectors(Bitmap image) throws IOException {
         ArrayList<ArrayList<Double>> imageVectors = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> location = new ArrayList<>();
         //will cut the image to pixel portions (squares) and saves their vectors
         for (int i = 0; i < image.getWidth() - pixelSize; i += pixelSize) {
             for (int j = 0; j < image.getHeight() - pixelSize; j += pixelSize) {
@@ -71,21 +88,38 @@ public class ImageProcessing {
                 //extracts the features
                 glcm.extract();
                 imageVectors.add(glcm.getVector());
+                ArrayList<Integer> currLocation = new ArrayList<>();
+                currLocation.add(i);
+                currLocation.add(j);
+                location.add(currLocation);
             }
         }
-        return imageVectors;
+        ArrayList<Object> arrayLists = new ArrayList<>();
+        arrayLists.add(imageVectors);
+        arrayLists.add(location);
+        return arrayLists;
     }
 
     public boolean optimizeVectors(ArrayList<ArrayList<Double>> allVectors , ArrayList<Double> newVector){
         boolean exists = false;
         for (ArrayList<Double> oldVector : allVectors) {
-            if (getVectorDistance(newVector,oldVector) < 0.05) {
+            if (getVectorDistance(newVector,oldVector) < 0.03) {
                return true;
             }
         }
         return false;
     }
 
+    public ArrayList<Double> avgVectors(ArrayList<Double> vector1 , ArrayList<Double> vector2){
+        ArrayList<Double> newVector = new ArrayList<>();
+        newVector.add((vector1.get(0)+vector2.get(0))/2);
+        newVector.add((vector1.get(1)+vector2.get(1))/2);
+        newVector.add((vector1.get(2)+vector2.get(2))/2);
+        newVector.add((vector1.get(3)+vector2.get(3))/2);
+        newVector.add((vector1.get(4)+vector2.get(4))/2);
+
+        return newVector;
+    }
     public static Double getVectorDistance(ArrayList<Double> vector1,ArrayList<Double> vector2){
         double distance = 0;
         for (int feature = 0; feature < vector1.size(); feature++) {
@@ -94,10 +128,32 @@ public class ImageProcessing {
         return distance;
     }
 
+    public void colorBitmap(ArrayList<ArrayList<Integer>> squaresToColor, Bitmap image){
+        image = image.copy( Bitmap.Config.ARGB_8888 , true);
+
+        for (ArrayList<Integer> location : squaresToColor) {
+            for (int i =  location.get(0); i <  location.get(0)+ pixelSize; i ++) {
+                for (int j =  location.get(1); j <  location.get(1) + pixelSize; j ++) {
+                    int pixel = image.getPixel(i,j);
+//                    Color newPixel = new Color();
+//                    newPixel.red(Color.red(pixel)+100);
+//                    newPixel.green(Color.green(pixel)+100);
+//                    newPixel.blue(Color.blue(pixel)+100);
+
+//                    image.setPixel(i,j,Color.rgb(Color.red(pixel)+10,Color.green(pixel)+10,Color.blue(pixel)+10));
+                    image.setPixel(i,j,Color.GREEN);
+                }
+            }
+        }
+        System.out.println("");
+    }
+
     public double compareNew(Bitmap image , String food_name) throws IOException {
         //will compare an image to database in order to get a percent value of every food in the image
         ArrayList<ArrayList<Double>> foodVectors = null;
         ArrayList<ArrayList<Double>> imageVectors;
+        ArrayList<ArrayList<Integer>> location = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> squaresToColor = new ArrayList<>();
         double percent = 0;
 
         // retrieves a specific foods feature vectors from the database
@@ -111,18 +167,24 @@ public class ImageProcessing {
 
         //gets the new image vectors
         Log.i(TAG,"new image vectors were retrieved");
-        imageVectors = getImageVectors(image);
-
-
+        ArrayList<Object> imageObjects = getImageVectors(image);
+        imageVectors = (ArrayList<ArrayList<Double>>) imageObjects.get(0);
+        location = (ArrayList<ArrayList<Integer>>) imageObjects.get(1);
+        int similarVectors = 0;
         for (ArrayList<Double> arrVector : imageVectors) {
             for (ArrayList<Double> foodVector : foodVectors) {
-                if(getVectorDistance(arrVector,foodVector)<0.08){
-                    percent+= (double)100/imageVectors.size();
-                    break;
+                if (getVectorDistance(arrVector, foodVector) < 0.08) {
+                    similarVectors++;
+                    if (similarVectors == 2) {
+                        similarVectors = 0;
+                        percent += (double) 100 / imageVectors.size();
+                        squaresToColor.add(location.get(imageVectors.indexOf(arrVector)));
+                        break;
+                    }
                 }
             }
         }
-
+        colorBitmap(squaresToColor,image);
         return percent;
     }
 }

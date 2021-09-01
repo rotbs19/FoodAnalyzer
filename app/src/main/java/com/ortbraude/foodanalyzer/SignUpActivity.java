@@ -1,10 +1,5 @@
 package com.ortbraude.foodanalyzer;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import com.parse.ParseUser;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,6 +8,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.parse.ParseUser;
 
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener, View.OnKeyListener{
@@ -46,7 +46,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     private void closeKeyboard(){
         InputMethodManager inputMethodManager = ( InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        if(inputMethodManager.isAcceptingText()) {
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
     public void signUpClicked(View v) {

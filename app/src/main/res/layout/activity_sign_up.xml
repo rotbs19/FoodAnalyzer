@@ -5,7 +5,7 @@
     android:id="@+id/backgroundLayoutSignUp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="#000000"
     tools:context=".SignUpActivity">
 
     <ImageView
@@ -142,7 +142,7 @@
         android:layout_marginEnd="162dp"
         android:backgroundTint="#CD8686"
         android:onClick="signUpClicked"
-        android:text="@string/login"
+        android:text="@string/signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

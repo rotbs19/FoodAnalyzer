@@ -89,14 +89,16 @@ public class Camerax extends AppCompatActivity {
         setTitle("Camera X");
         singleton = ImageHandlerSingleton.getInstance();
         galleryBtn = findViewById(R.id.galleryBtnCamera);
+        cardBorder = (ImageView) findViewById(R.id.cardBorder);
+        cardBorder.setOnTouchListener(onTouchListener());
         if(!singleton.newAlbum.isEmpty()) {
             Bitmap bitmap = singleton.newAlbum.get(singleton.newAlbum.size() - 1);
             galleryBtn.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 200, 200, false));
+            cardBorder.setVisibility(View.INVISIBLE);
         }else{galleryBtn.setImageResource(R.drawable.gallery);}
         focusView = findViewById(R.id.focus);
         viewFinder = findViewById(R.id.viewFinder);
-        cardBorder = (ImageView) findViewById(R.id.cardBorder);
-        cardBorder.setOnTouchListener(onTouchListener());
+
         relativeLayout = (RelativeLayout) findViewById(R.id.relativeLayout);
 
         OrientationEventListener orientationEventListener = new OrientationEventListener((Context)this) {
@@ -123,7 +125,7 @@ public class Camerax extends AppCompatActivity {
             requestPermissions(REQUIRED_PERMISSIONS, ASK_MULTIPLE_PERMISSION_REQUEST_CODE);
         }
         cameraExecutor = Executors.newSingleThreadExecutor();
-        if(singleton.newAlbum.size()!=0){ // will show only for the first picture
+        if(singleton.newAlbum.size()==0){ // will show only for the first picture
             Toast tost = Toast.makeText(this, "The first picture must be taken in parallel to the dish (directly from above) and a wallet card must fit the black rectangle",Toast.LENGTH_LONG);
             tost.setGravity(Gravity.CENTER_VERTICAL,0,0);
             tost.show();
@@ -182,6 +184,7 @@ public class Camerax extends AppCompatActivity {
             @Override
             public void onCaptureSuccess(@NonNull ImageProxy image) {
                 Log.i(TAG,"the capture was successful");
+                cardBorder.setVisibility(View.INVISIBLE);
                 Bitmap imageBitmap = imageProxyToBitmap(image);
                 Matrix matrix = new Matrix();
                 imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 640, 480, true);
