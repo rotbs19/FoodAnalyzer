@@ -1,7 +1,6 @@
 package com.ortbraude.foodanalyzer;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -73,7 +72,7 @@ public class HomeWindowActivity extends AppCompatActivity {
     }
 
     private void uploadNewFood() throws IOException {
-        ImageProcessing imageProcessing = new ImageProcessing(80,32);
+        ImageProcessing imageProcessing = new ImageProcessing();
 //        ArrayList<Bitmap> images = new ArrayList<>();
 //        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steaktop1));
 //        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steaktop2));
@@ -92,7 +91,7 @@ public class HomeWindowActivity extends AppCompatActivity {
 //            e.printStackTrace();
 //        }
         System.out.println("");
-        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3),"Steak");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3),"Steak");
 //        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getReso
     }
 }

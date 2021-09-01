@@ -15,15 +15,11 @@ import java.util.ArrayList;
 public class ImageProcessing {
     private String TAG = "ImageProcessing";
     //best performance is 80 - MUST be uniform;
-    public int pixelSize;
+    public int pixelSize = 80;
     //set to 32;
-    public int greyLevels;
+    public int greyLevels = 32;
 
-    public ImageProcessing(int pixelSize, int greyLevels) {
-        // sets the image
-        this.pixelSize = pixelSize;
-        this.greyLevels = greyLevels;
-    }
+
 
     public void addFoodToDB(String name, ArrayList<Bitmap> images) throws IOException {
         ArrayList<ArrayList<Double>> allVectors = new ArrayList<>();
@@ -120,6 +116,7 @@ public class ImageProcessing {
 
         return newVector;
     }
+
     public static Double getVectorDistance(ArrayList<Double> vector1,ArrayList<Double> vector2){
         double distance = 0;
         for (int feature = 0; feature < vector1.size(); feature++) {
@@ -130,22 +127,17 @@ public class ImageProcessing {
 
     public void colorBitmap(ArrayList<ArrayList<Integer>> squaresToColor, Bitmap image){
         image = image.copy( Bitmap.Config.ARGB_8888 , true);
-
         for (ArrayList<Integer> location : squaresToColor) {
             for (int i =  location.get(0); i <  location.get(0)+ pixelSize; i ++) {
                 for (int j =  location.get(1); j <  location.get(1) + pixelSize; j ++) {
                     int pixel = image.getPixel(i,j);
-//                    Color newPixel = new Color();
-//                    newPixel.red(Color.red(pixel)+100);
-//                    newPixel.green(Color.green(pixel)+100);
-//                    newPixel.blue(Color.blue(pixel)+100);
 
-//                    image.setPixel(i,j,Color.rgb(Color.red(pixel)+10,Color.green(pixel)+10,Color.blue(pixel)+10));
-                    image.setPixel(i,j,Color.GREEN);
+                    image.setPixel(i,j,Color.rgb(Color.red(pixel),Color.green(pixel)+130,Color.blue(pixel)));
                 }
             }
         }
-        System.out.println("");
+        ImageHandlerSingleton singleton = ImageHandlerSingleton.getInstance();
+        singleton.tintedImage = image;
     }
 
     public double compareNew(Bitmap image , String food_name) throws IOException {
@@ -173,9 +165,9 @@ public class ImageProcessing {
         int similarVectors = 0;
         for (ArrayList<Double> arrVector : imageVectors) {
             for (ArrayList<Double> foodVector : foodVectors) {
-                if (getVectorDistance(arrVector, foodVector) < 0.08) {
+                if (getVectorDistance(arrVector, foodVector) < 0.070) {
                     similarVectors++;
-                    if (similarVectors == 2) {
+                    if (similarVectors == 1) {
                         similarVectors = 0;
                         percent += (double) 100 / imageVectors.size();
                         squaresToColor.add(location.get(imageVectors.indexOf(arrVector)));
@@ -187,5 +179,6 @@ public class ImageProcessing {
         colorBitmap(squaresToColor,image);
         return percent;
     }
+
 }
 

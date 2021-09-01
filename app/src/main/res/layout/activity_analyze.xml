@@ -7,6 +7,15 @@
     android:background="#000000"
     tools:context=".AnalyzeActivity">
 
+    <ImageView
+        android:id="@+id/tintedImage"
+        android:layout_width="242dp"
+        android:layout_height="272dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/main_label"
         android:layout_width="wrap_content"
@@ -17,17 +26,29 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar1" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="260dp"
+        android:layout_marginEnd="180dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/analyzBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="getInfo"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/main_label"
+        android:layout_marginStart="156dp"
+        android:layout_marginEnd="167dp"
+        android:layout_marginBottom="59dp"
+        android:text="Analyze"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

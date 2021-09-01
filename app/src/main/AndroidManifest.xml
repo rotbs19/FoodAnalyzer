@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-
     <uses-feature android:name="android.hardware.camera2.full" />
 
     <application
@@ -19,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodAnalyzer">
-        <activity android:name=".Camerax"></activity>
+        <activity android:name=".FinalActivity"></activity>
+        <activity android:name=".Camerax" />
         <activity android:name=".AnalyzeActivity" />
         <activity android:name=".ClassifyActivity" />
         <activity android:name=".GalleryActivity" />
