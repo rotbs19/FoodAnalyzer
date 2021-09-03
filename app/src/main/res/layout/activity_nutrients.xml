@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Energy:"
+                android:text="Energy: (kcal)"
                 android:textColor="#FFFFFF" />
 
             <TextView
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Fat:"
+                android:text="Fat (g):"
                 android:textColor="#FFFFFF" />
 
             <TextView
@@ -144,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Protein:"
+                android:text="Protein (g): "
                 android:textColor="#FFFFFF" />
 
             <TextView
@@ -174,7 +174,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cholesterol:"
+                android:text="Cholesterol (mg): "
                 android:textColor="#FFFFFF" />
 
             <TextView
@@ -201,6 +201,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/sodiumLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -234,7 +235,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Carbohydrates:"
+                android:text="Carbohydrates (g): "
                 android:textColor="#FFFFFF" />
 
             <TextView

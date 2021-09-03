@@ -19,8 +19,8 @@ public class AnalyzeActivity extends AppCompatActivity {
     private String label;
     private String food1;
     private String food2;
-    private double percent1;
-    private double percent2;
+    private Double percent1;
+    private Double percent2;
     private ImageHandlerSingleton singleton;
     ImageView tintedImage;
     TextView foodTV;
