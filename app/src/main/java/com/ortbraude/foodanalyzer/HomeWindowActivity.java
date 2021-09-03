@@ -17,7 +17,6 @@ import java.io.IOException;
 
 public class HomeWindowActivity extends AppCompatActivity {
     private String TAG = "HomeWindowActivity";
-    private ImageHandlerSingleton singleton;
 
     @Override
     public boolean onCreateOptionsMenu (Menu menu){
@@ -57,22 +56,17 @@ public class HomeWindowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_window);
         setTitle("Food Analyzer");
-        singleton = ImageHandlerSingleton.getInstance();
-        try {
-            uploadNewFood();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-//        ImageProcessing  imageProcessing = new ImageProcessing(80,32);
 //        try {
-//            imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3),"Steak");
+//            uploadNewFood();
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+
     }
 
     private void uploadNewFood() throws IOException {
         ImageProcessing imageProcessing = new ImageProcessing();
+
 //        ArrayList<Bitmap> images = new ArrayList<>();
 //        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steaktop1));
 //        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steaktop2));
@@ -84,14 +78,28 @@ public class HomeWindowActivity extends AppCompatActivity {
 //        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak5));
 //        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak6));
 //        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak7));
+//        imageProcessing.addFoodToDB("steak",images,"NYqlD0Fxho");
 
-//        try {
-//            imageProcessing.addFoodToDB("Steak", images);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        System.out.println("");
-//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3),"Steak");
-//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getReso
+//        ArrayList<Bitmap> images = new ArrayList<>();
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries1));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries2));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries3));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries4));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries5));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries6));
+//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries7));
+//        imageProcessing.addFoodToDB("fries",images,"JvHXwoTQ1B");
+
+
+
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steakandfries1),"Fries");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.testfries1),"Fries");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.testfries2),"Fries");
+//
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steakandfries1),"Steak");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.teststeak1),"Steak");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.teststeak2),"Steak");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.teststeak3),"Steak");
+
     }
 }

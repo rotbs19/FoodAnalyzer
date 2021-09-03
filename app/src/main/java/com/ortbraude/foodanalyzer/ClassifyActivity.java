@@ -3,8 +3,8 @@ package com.ortbraude.foodanalyzer;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -47,7 +47,6 @@ public class ClassifyActivity extends AppCompatActivity {
     private TextView label1;
     private TextView label2;
     private TextView label3;
-    private TextView labelMessage;
     private TextView Confidence1;
     private TextView Confidence2;
     private TextView Confidence3;
@@ -75,17 +74,10 @@ public class ClassifyActivity extends AppCompatActivity {
     // int array to hold image data
     private int[] intValues;
 
-    //uri to store file
-    private Uri filePathImage;
-    private Uri fileName;
-    private String imagePath;
-
     // input image dimensions for the Inception Model
     private int DIM_IMG_SIZE_X = 299;
     private int DIM_IMG_SIZE_Y = 299;
     private int DIM_PIXEL_SIZE = 3;
-
-
 
 
     private PriorityQueue<Map.Entry<String, Float>> sortedLabels =
@@ -105,10 +97,9 @@ public class ClassifyActivity extends AppCompatActivity {
         setContentView(R.layout.activity_classify);
         setTitle("What is your food?");
         singleton = ImageHandlerSingleton.getInstance();
-        image = singleton.newAlbum.get(0);
-//        image = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test);
+//        image = singleton.newAlbum.get(0);
+        image = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steakandfries1);
         // get all selected classifier data from classifiers
-        //chosen = (String) getIntent().getStringExtra("chosen");
         quant = (boolean) getIntent().getBooleanExtra("quant", false);
         // initialize array that holds image data
         intValues = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
@@ -220,8 +211,6 @@ public class ClassifyActivity extends AppCompatActivity {
 
     private List<String> loadLabelList() throws IOException {
         List<String> labelList = new ArrayList<>();
-//        AssetManager am =this.getAssets();
-//        InputStream is = am.open("labels");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(this.getAssets().open("food_labels.txt")));
         String line;
@@ -231,7 +220,6 @@ public class ClassifyActivity extends AppCompatActivity {
         reader.close();
         return labelList;
     }
-
 
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
@@ -300,8 +288,5 @@ public class ClassifyActivity extends AppCompatActivity {
         Confidence2.setText(topConfidence[1]);
         Confidence3.setText(topConfidence[0]);
     }
-
-
-
 
 }

@@ -18,7 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodAnalyzer">
-        <activity android:name=".FinalActivity"></activity>
+        <activity android:name=".NutrientsActivity"></activity>
         <activity android:name=".Camerax" />
         <activity android:name=".AnalyzeActivity" />
         <activity android:name=".ClassifyActivity" />

@@ -25,8 +25,6 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
 
 
     public void doneClicked(View v){
-//        ImageProcessing imageProcessing = new ImageProcessing(80,32);
-//        imageProcessing.colorBitmap2(singleton.newAlbum.get(0));
         Log.i(TAG,"done pressed - saves new meal album");
         if(singleton.newAlbum.size()!=0) { // will check if a picture was taken
             singleton.uploadAlbum();
@@ -38,7 +36,6 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
 
     public void cancelClicked(View v){
         Log.i(TAG,"cancel pressed - cancels new meal album");
-        singleton.resetSingleton();
         finish();
     }
 
@@ -120,6 +117,7 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
         switch (intent.getStringExtra("Gallery mode")){
             case "new meal":
                 Log.i(TAG,"Gallery of new meal Type - sets the type and sets the programAdapter to singleton.newAlbum");
+                singleton.resetSingleton();
                 mode = GalleryMode.newMeal;
                 programAdapter = new ProgramAdapter(this,singleton.newAlbum);
                 break;

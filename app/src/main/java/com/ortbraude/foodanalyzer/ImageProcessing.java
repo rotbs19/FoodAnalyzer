@@ -4,10 +4,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,53 +20,46 @@ public class ImageProcessing {
     public int greyLevels = 32;
 
 
+    public void addFoodToDB(String name, ArrayList<Bitmap> images,String objectId) throws IOException {
+        ArrayList<ArrayList<Double>> vectorsForDB = new ArrayList<>();
+        ArrayList<ArrayList<Double>> currImageVecForDB = new ArrayList<>();
+        ArrayList<ArrayList<Double>> allImageVectors;
+        ArrayList<Double> avgVectorForImage;
 
-    public void addFoodToDB(String name, ArrayList<Bitmap> images) throws IOException {
-        ArrayList<ArrayList<Double>> allVectors = new ArrayList<>();
-        ArrayList<ArrayList<Double>> imageVectors;
-        ArrayList<Double> avgVector = new ArrayList<>();
         for (int pic = 0; pic < images.size(); pic++) {
-            imageVectors = (ArrayList<ArrayList<Double>>) getImageVectors(images.get(pic)).get(0);
-            if(avgVector.size()==0){
-                avgVector = imageVectors.get(0);
-            }
-            if(pic<3) {
-                for (ArrayList<Double> newVector : imageVectors) {
-                    allVectors.add(newVector);
-                    avgVector = avgVectors(avgVector,newVector);
-                }
-            }
-             else {
-                //removes overlapping vectors to optimize the dataset
-                for(ArrayList<Double> newVector : imageVectors){
-                    if(!optimizeVectors(allVectors,newVector)){
-                        if(getVectorDistance(newVector,avgVector)>0.07){
-                            allVectors.add(newVector);
-                            avgVector = avgVectors(avgVector,newVector);
+            allImageVectors = (ArrayList<ArrayList<Double>>) getImageVectors(images.get(pic)).get(0);
+            avgVectorForImage = avgVectors(allImageVectors);
+            for (ArrayList<Double> checkVector : allImageVectors) {
+                if(!optimizeVectors(vectorsForDB,checkVector)) {
+                    if(getVectorDistance(checkVector,avgVectorForImage)<0.7){
+                        currImageVecForDB.add(checkVector);
+                        if(pic == 0){
+                            vectorsForDB.add(checkVector);
                         }
                     }
                 }
             }
+            if(pic != 0){
+                vectorsForDB.addAll(currImageVecForDB);
+            }
+            currImageVecForDB.clear();
         }
-
         Log.i(TAG,"Adding "+name+" to data base");
         // Configure Query
-        ParseObject vectors = new ParseObject("vectorDB");
-        // Store an object
-        vectors.put("name",name);
-        vectors.put("vectors",allVectors);
-        // Saving object
-        vectors.saveInBackground(new SaveCallback() {
-            @Override
-            public void done (ParseException e){
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("vectorDB");
+        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+            public void done(ParseObject food, ParseException e) {
                 if (e == null) {
                     Log.i(TAG, "" + name + " was added successfully");
+                    food.put("vectors",vectorsForDB);
+                    food.saveInBackground();
                 } else {
                     Log.i(TAG, "" + name + " was not added due to an error");
                 }
             }
         });
     }
+
     // retrieves all the vectors of an image
     public ArrayList<Object> getImageVectors(Bitmap image) throws IOException {
         ArrayList<ArrayList<Double>> imageVectors = new ArrayList<>();
@@ -99,22 +92,26 @@ public class ImageProcessing {
     public boolean optimizeVectors(ArrayList<ArrayList<Double>> allVectors , ArrayList<Double> newVector){
         boolean exists = false;
         for (ArrayList<Double> oldVector : allVectors) {
-            if (getVectorDistance(newVector,oldVector) < 0.03) {
+            if (getVectorDistance(newVector,oldVector) < 0.06) {
                return true;
             }
         }
         return false;
     }
 
-    public ArrayList<Double> avgVectors(ArrayList<Double> vector1 , ArrayList<Double> vector2){
-        ArrayList<Double> newVector = new ArrayList<>();
-        newVector.add((vector1.get(0)+vector2.get(0))/2);
-        newVector.add((vector1.get(1)+vector2.get(1))/2);
-        newVector.add((vector1.get(2)+vector2.get(2))/2);
-        newVector.add((vector1.get(3)+vector2.get(3))/2);
-        newVector.add((vector1.get(4)+vector2.get(4))/2);
-
-        return newVector;
+    public ArrayList<Double> avgVectors(ArrayList<ArrayList<Double>> allVectors ){
+        ArrayList<Double> avgVector = new ArrayList<>();
+        avgVector = allVectors.get(0);
+        for (ArrayList<Double> nextVector : allVectors) {
+            ArrayList<Double> newVector = new ArrayList<>();
+            newVector.add(((avgVector.get(0)*(allVectors.indexOf(nextVector)+1))+nextVector.get(0))/(allVectors.indexOf(nextVector)+2));
+            newVector.add(((avgVector.get(1)*(allVectors.indexOf(nextVector)+1))+nextVector.get(1))/(allVectors.indexOf(nextVector)+2));
+            newVector.add(((avgVector.get(2)*(allVectors.indexOf(nextVector)+1))+nextVector.get(2))/(allVectors.indexOf(nextVector)+2));
+            newVector.add(((avgVector.get(3)*(allVectors.indexOf(nextVector)+1))+nextVector.get(3))/(allVectors.indexOf(nextVector)+2));
+            newVector.add(((avgVector.get(4)*(allVectors.indexOf(nextVector)+1))+nextVector.get(4))/(allVectors.indexOf(nextVector)+2));
+            avgVector = newVector;
+        }
+        return avgVector;
     }
 
     public static Double getVectorDistance(ArrayList<Double> vector1,ArrayList<Double> vector2){
@@ -137,7 +134,7 @@ public class ImageProcessing {
             }
         }
         ImageHandlerSingleton singleton = ImageHandlerSingleton.getInstance();
-        singleton.tintedImage = image;
+        singleton.tintedImages.add(image);
     }
 
     public double compareNew(Bitmap image , String food_name) throws IOException {
@@ -146,13 +143,15 @@ public class ImageProcessing {
         ArrayList<ArrayList<Double>> imageVectors;
         ArrayList<ArrayList<Integer>> location = new ArrayList<>();
         ArrayList<ArrayList<Integer>> squaresToColor = new ArrayList<>();
+        double distance = 0;
         double percent = 0;
 
         // retrieves a specific foods feature vectors from the database
         ParseQuery<ParseObject> query = ParseQuery.getQuery("vectorDB");
-        query.whereEqualTo("name", "Steak");
+        query.whereEqualTo("name", food_name);
         try {
             foodVectors = (ArrayList<ArrayList<Double>>) query.getFirst().get("vectors");
+            distance = (double)query.getFirst().get("distance");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -165,7 +164,7 @@ public class ImageProcessing {
         int similarVectors = 0;
         for (ArrayList<Double> arrVector : imageVectors) {
             for (ArrayList<Double> foodVector : foodVectors) {
-                if (getVectorDistance(arrVector, foodVector) < 0.070) {
+                if (getVectorDistance(arrVector, foodVector) < distance) {
                     similarVectors++;
                     if (similarVectors == 1) {
                         similarVectors = 0;

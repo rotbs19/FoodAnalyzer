@@ -24,7 +24,7 @@ public class ImageHandlerSingleton {
     public ArrayList <Bitmap> galleries;
     public ArrayList <ParseObject>galleriesObjects;
     public ArrayList <Bitmap> meals;
-    public  Bitmap tintedImage;
+    public ArrayList <Bitmap> tintedImages;
 
 
     private String TAG = "ImageHandlerSingleton";
@@ -35,6 +35,7 @@ public class ImageHandlerSingleton {
         galleries = new ArrayList<>();
         meals = new ArrayList<>();
         galleriesObjects = new ArrayList<>();
+        tintedImages = new ArrayList<>();
 
     }
 
@@ -49,6 +50,7 @@ public class ImageHandlerSingleton {
 
     public void resetSingleton(){
         newAlbum.clear();
+        tintedImages.clear();
     }
 
     public void uploadAlbum(){

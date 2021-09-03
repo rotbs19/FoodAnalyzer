@@ -3,162 +3,83 @@ package com.ortbraude.foodanalyzer;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
-import usdaFood.app.USDApp;
-import usdaFood.usda.USDAClient;
 
 public class AnalyzeActivity extends AppCompatActivity {
 
-    private TextView main_label;
-    private ImageProcessing imageProcessing;
-    private ImageHandlerSingleton singleton;
     private String TAG = "AnalyzeActivity";
-    private String dishName;
-    private ProgressBar spinner;
-    private ImageView tintedImage;
-    private Button analyze;
-    Map<String, Double> precent = null ;
-    ArrayList<String> component = null;
+    private String label;
+    private String food1;
+    private String food2;
+    private double percent1;
+    private double percent2;
+    private ImageHandlerSingleton singleton;
+    ImageView tintedImage;
+    TextView foodTV;
+    Button otherPicBtn;
+    ProgressBar progressBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze);
-        this.analyze = (Button) findViewById(R.id.analyzBtn);
-        this.dishName = "Steak";/* getIntent().getStringExtra("LABEL");*/
-        this.main_label = (TextView) findViewById(R.id.main_label);
-        this.tintedImage = findViewById(R.id.tintedImage);
-        this.imageProcessing = new ImageProcessing();
-        this.singleton = ImageHandlerSingleton.getInstance();
-        this.spinner = (ProgressBar)findViewById(R.id.progressBar1);
-        this.spinner.setVisibility(View.GONE);
-        analyzeDish();
+        singleton = ImageHandlerSingleton.getInstance();
+        foodTV = findViewById(R.id.foodTV);
+        otherPicBtn = findViewById(R.id.otherPicBtn);
+        progressBar = findViewById(R.id.progressBar);
+        tintedImage = findViewById(R.id.tintedImage);
+        progressBar.setVisibility(View.VISIBLE);
+        label = getIntent().getStringExtra("LABEL");
+        // get food 1 and 2 from LABEL (dish name from classify activity
+//        food1 =
+//        food2 =
+        food1 = "Steak";
+        food2 = "Fries";
+        if(food2 == null){
+            otherPicBtn.setVisibility(View.INVISIBLE);
+        }
+        ImageProcessing imageProcessing = new ImageProcessing();
+
         try {
-            USDAFood();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+//            percent1 = imageProcessing.compareNew(singleton.newAlbum.get(0),food1);
+//            percent2 = imageProcessing.compareNew(singleton.newAlbum.get(0),food2);
+            percent1 = imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steakandfries1),food1);
+            percent2 = imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steakandfries1),food2);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        tintedImage.setImageBitmap(singleton.tintedImages.get(0));
+        foodTV.setText(food1);
+        progressBar.setVisibility(View.GONE);
     }
 
-    public void analyzeDish() {
-        String msg = "";
-        try {
-            component = split_label();
-        } catch (IOException e) {
-            Log.i(TAG,e.getMessage());
+    public void changePicClicked(View v){
+        if(foodTV.getText().equals(food1)){
+            foodTV.setText(food2);
+            tintedImage.setImageBitmap(singleton.tintedImages.get(1));
+        }else{
+            foodTV.setText(food1);
+            tintedImage.setImageBitmap(singleton.tintedImages.get(0));
         }
-        try {
-            if(component.size() != 0) {
-                precent = new HashMap<>();
-                for (int i = 0; i < component.size(); ++i) {
-                    precent.put(component.get(i),imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.test3)/*singleton.newAlbum.get(0)*/, component.get(i)));
-                }
-                main_label.setText("This picture are contain: "+precent.get(component.get(0))+ " of "+component.get(0));
-                tintedImage.setImageBitmap(ImageHandlerSingleton.getInstance().tintedImage);
-
-//                this.spinner.setVisibility(View.GONE);
-            }
-            else{
-                Toast.makeText(this, "This food is not in the DATA BASE.", Toast.LENGTH_LONG).show();
-            }
-        } catch (IOException e) {
-            Log.e(TAG,e.getMessage());
-        }
-
 
     }
 
-
-
-
-    public ArrayList<String> split_label() throws IOException {
-        ArrayList<String> Final_ingr = new ArrayList<>();
-        ArrayList<String> temp_ingr = new ArrayList<>();
-        String[] arrOffood = dishName.split(" ", 4);
-        for (String a : arrOffood) {
-            temp_ingr.add(a);
-        }
-        for(int i = 0 ; i<temp_ingr.size() ; ++i){
-            if(getAllDataSet(temp_ingr.get(i))){
-                Final_ingr.add(temp_ingr.get(i));
-            }
-        }
-        return Final_ingr;
+    public void nutrientsClicked(View v){
+        Intent intent = new Intent(getApplicationContext(), NutrientsActivity.class);
+        intent.putExtra("food1",food1);
+        intent.putExtra("food2",food2);
+        intent.putExtra("percent1",percent1);
+        intent.putExtra("percent2",percent2);
+        startActivity(intent);
     }
-
-
-    private boolean getAllDataSet(String name) throws IOException {
-        ArrayList<String> temp = new ArrayList<>();
-        // retrieves a specific foods feature vectors from the database
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("vectorDB");
-        query.whereEqualTo("name", name);
-        try {
-            temp = (ArrayList<String>) query.getFirst().get("vectors");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if(temp.size() == 0){
-            return Boolean.FALSE;
-        }
-        else return Boolean.TRUE;
-    }
-
-
-
-
-    public void USDAFood() throws JSONException, InterruptedException, ExecutionException, IOException {
-        USDApp usdApp = new USDApp();
-        USDAClient usdaClient = usdApp.getUSDAClient();
-        JSONObject jsonObject = usdaClient.searchFood("steak");
-        System.out.println("");
-    }
-
-
-    public void getInfo(View v) throws JSONException, InterruptedException, ExecutionException, IOException {
-        analyzeDish();
-        USDApp usdApp = new USDApp();
-        USDAClient usdaClient = usdApp.getUSDAClient();
-        JSONObject jsonObject = usdaClient.searchFood("steak");
-        System.out.println("");
-    }
-
-    public void onClick(View v) {
-        if (v.getId() == R.id.analyzBtn) {
-            Intent intent = new Intent(getApplicationContext(), FinalActivity.class);
-            intent.putExtra("precent",precent.get(component.get(0)));
-            intent.putExtra("component",component.get(0));
-            startActivity(intent);
-        }
-    }
-
-
-
 }
