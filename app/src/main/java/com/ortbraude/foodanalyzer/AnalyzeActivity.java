@@ -62,7 +62,6 @@ public class AnalyzeActivity extends AppCompatActivity {
         foodTV.setText(food1);
         progressBar.setVisibility(View.GONE);
     }
-
     public void changePicClicked(View v){
         if(foodTV.getText().equals(food1)){
             foodTV.setText(food2);
@@ -71,7 +70,6 @@ public class AnalyzeActivity extends AppCompatActivity {
             foodTV.setText(food1);
             tintedImage.setImageBitmap(singleton.tintedImages.get(0));
         }
-
     }
 
     public void nutrientsClicked(View v){
