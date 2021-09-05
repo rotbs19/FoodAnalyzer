@@ -31,7 +31,7 @@ public class ImageProcessing {
             avgVectorForImage = avgVectors(allImageVectors);
             for (ArrayList<Double> checkVector : allImageVectors) {
                 if(!optimizeVectors(vectorsForDB,checkVector)) {
-                    if(getVectorDistance(checkVector,avgVectorForImage)<0.7){
+                    if(getVectorDistance(checkVector,avgVectorForImage)<0.3){
                         currImageVecForDB.add(checkVector);
                         if(pic == 0){
                             vectorsForDB.add(checkVector);
@@ -92,7 +92,7 @@ public class ImageProcessing {
     public boolean optimizeVectors(ArrayList<ArrayList<Double>> allVectors , ArrayList<Double> newVector){
         boolean exists = false;
         for (ArrayList<Double> oldVector : allVectors) {
-            if (getVectorDistance(newVector,oldVector) < 0.06) {
+            if (getVectorDistance(newVector,oldVector) < 0.08) {
                return true;
             }
         }

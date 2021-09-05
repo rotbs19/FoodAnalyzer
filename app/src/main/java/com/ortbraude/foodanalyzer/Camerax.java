@@ -126,7 +126,7 @@ public class Camerax extends AppCompatActivity {
         }
         cameraExecutor = Executors.newSingleThreadExecutor();
         if(singleton.newAlbum.size()==0){ // will show only for the first picture
-            Toast tost = Toast.makeText(this, "The first picture must be taken in parallel to the dish (directly from above) and a wallet card must fit the black rectangle",Toast.LENGTH_LONG);
+            Toast tost = Toast.makeText(this, "A wallet card must fit the black rectangle",Toast.LENGTH_LONG);
             tost.setGravity(Gravity.CENTER_VERTICAL,0,0);
             tost.show();
         }

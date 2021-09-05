@@ -27,6 +27,7 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
     public void doneClicked(View v){
         Log.i(TAG,"done pressed - saves new meal album");
         if(singleton.newAlbum.size()!=0) { // will check if a picture was taken
+//            Crop.of(singleton.newAlbum.get(0), dest_uri).asSquare().start(getApplicationContext());
             singleton.uploadAlbum();
             Intent intent = new Intent(getApplicationContext(), ClassifyActivity.class);
             startActivity(intent);

@@ -1,6 +1,8 @@
 package com.ortbraude.foodanalyzer;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.parse.ParseUser;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class HomeWindowActivity extends AppCompatActivity {
     private String TAG = "HomeWindowActivity";
@@ -56,11 +59,11 @@ public class HomeWindowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_window);
         setTitle("Food Analyzer");
-//        try {
-//            uploadNewFood();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            uploadNewFood();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -80,17 +83,28 @@ public class HomeWindowActivity extends AppCompatActivity {
 //        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steak7));
 //        imageProcessing.addFoodToDB("steak",images,"NYqlD0Fxho");
 
-//        ArrayList<Bitmap> images = new ArrayList<>();
-//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries1));
-//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries2));
-//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries3));
-//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries4));
-//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries5));
-//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries6));
-//        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries7));
+        ArrayList<Bitmap> images = new ArrayList<>();
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries1));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries2));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries3));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries4));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries5));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries6));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries7));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries8));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries9));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries10));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries11));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries12));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries13));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries14));
+        images.add(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.fries15));
 //        imageProcessing.addFoodToDB("fries",images,"JvHXwoTQ1B");
 
-
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.newtest9),"Fries");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.newtest9),"Steak");
+//        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steakandfries1),"Fries");
+////        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.newtest3),"Fries");
 
 //        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.steakandfries1),"Fries");
 //        imageProcessing.compareNew(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.testfries1),"Fries");
